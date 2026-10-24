@@ -1,0 +1,106 @@
+{{- if .Values.networkPolicies.enabled }}
+# 1. Deny all ingress by default in urumi-store
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-store
+  namespace: {{ .Values.namespaces.store }}
+  labels:
+    {{- include "mcp-gateway.labels" . | nindent 4 }}
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+---
+# 2. Allow Ingress Controller to WordPress storefront
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-ingress-to-wordpress
+  namespace: {{ .Values.namespaces.store }}
+  labels:
+    {{- include "mcp-gateway.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: wordpress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ingress-nginx
+      ports:
+        - protocol: TCP
+          port: 80
+  policyTypes:
+    - Ingress
+---
+# 3. Allow WordPress to communicate with MariaDB
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-wordpress-to-mariadb
+  namespace: {{ .Values.namespaces.store }}
+  labels:
+    {{- include "mcp-gateway.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: mariadb
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: wordpress
+      ports:
+        - protocol: TCP
+          port: 3306
+  policyTypes:
+    - Ingress
+---
+# 4. Multi-Layer Guardrail: Allow WooCommerce MCP to be called ONLY by the Gateway in urumi-gateway
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-gateway-to-woocommerce-mcp
+  namespace: {{ .Values.namespaces.store }}
+  labels:
+    {{- include "mcp-gateway.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: woocommerce-mcp
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: {{ .Values.namespaces.gateway }}
+      ports:
+        - protocol: TCP
+          port: 3000
+  policyTypes:
+    - Ingress
+---
+# 5. Allow WooCommerce MCP to call WordPress REST API
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-mcp-to-wordpress
+  namespace: {{ .Values.namespaces.store }}
+  labels:
+    {{- include "mcp-gateway.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: wordpress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: woocommerce-mcp
+      ports:
+        - protocol: TCP
+          port: 80
+  policyTypes:
+    - Ingress
+{{- end }}

@@ -1,0 +1,27 @@
+# Local environment overrides for Kind / Minikube
+global:
+  environment: local
+  baseDomain: 127.0.0.1.nip.io
+
+smokeTest:
+  enabled: true
+  replicaCount: 1
+
+store:
+  domain: store.127.0.0.1.nip.io
+  storageClass: standard # Kind's default StorageClass is standard
+  ingress:
+    className: nginx
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-body-size: "64m"
+
+gateway:
+  domain: gateway.127.0.0.1.nip.io
+  database:
+    storageClass: standard
+  ingress:
+    className: nginx
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-buffering: "off"
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+      nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"

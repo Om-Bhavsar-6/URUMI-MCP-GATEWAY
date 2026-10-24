@@ -1,0 +1,160 @@
+# Default values for mcp-gateway.
+# This file defines base configuration inherited by values-local.yaml and values-prod.yaml.
+
+global:
+  environment: local
+  baseDomain: 127.0.0.1.nip.io
+
+namespaces:
+  store: urumi-store
+  gateway: urumi-gateway
+
+networkPolicies:
+  enabled: false
+
+smokeTest:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: nginx
+    tag: alpine
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 80
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+store:
+  domain: store.127.0.0.1.nip.io
+  storageClass: standard
+  database:
+    name: wordpress
+    user: wp_user
+    password: wp_secure_password_123
+    rootPassword: root_secure_password_123
+    storageSize: 5Gi
+    image:
+      repository: mariadb
+      tag: "10.11"
+      pullPolicy: IfNotPresent
+  wordpress:
+    adminUser: admin
+    adminPassword: admin_secure_password_123
+    adminEmail: admin@urumi.local
+    storageSize: 10Gi
+    image:
+      repository: wordpress
+      tag: "6.6-php8.2-apache"
+      pullPolicy: IfNotPresent
+  woocommerce:
+    consumerKey: "ck_urumi_live_test_key_123"
+    consumerSecret: "cs_urumi_live_test_secret_123"
+  init:
+    image:
+      repository: wordpress
+      tag: "cli-php8.2"
+      pullPolicy: IfNotPresent
+  ingress:
+    className: nginx
+    annotations: {}
+  resources:
+    wordpress:
+      requests:
+        cpu: 200m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1024Mi
+    database:
+      requests:
+        cpu: 150m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+
+gateway:
+  domain: gateway.127.0.0.1.nip.io
+  backend:
+    port: 4000
+    image:
+      repository: gateway-backend
+      tag: latest
+      pullPolicy: IfNotPresent
+  database:
+    name: mcp_gateway
+    user: gateway_user
+    password: gateway_secure_password_123
+    storageClass: standard
+    storageSize: 2Gi
+    image:
+      repository: postgres
+      tag: "16-alpine"
+      pullPolicy: IfNotPresent
+  auth:
+    jwtSecretKey: "change-in-production-secret"
+  llm:
+    provider: gemini # or openai
+    existingSecret: gateway-llm-credentials
+  resources:
+    backend:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    dashboard:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 250m
+        memory: 256Mi
+
+upstreams:
+  woocommerceMcp:
+    port: 3000
+    image:
+      repository: woocommerce-mcp
+      tag: latest
+      pullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 250m
+        memory: 256Mi
+  weatherMcp:
+    port: 3001
+    image:
+      repository: mock-upstreams
+      tag: latest
+      pullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 250m
+        memory: 256Mi
+  notesMcp:
+    port: 3002
+    image:
+      repository: mock-upstreams
+      tag: latest
+      pullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 250m
+        memory: 256Mi

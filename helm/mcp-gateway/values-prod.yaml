@@ -1,0 +1,35 @@
+# Production environment overrides for VPS (k3s) with cert-manager
+global:
+  environment: production
+  baseDomain: urumi.example.com
+
+networkPolicies:
+  enabled: true
+
+smokeTest:
+  enabled: false
+
+store:
+  domain: store.urumi.example.com
+  storageClass: local-path # k3s default StorageClass
+  ingress:
+    className: traefik # or nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    tls:
+      - secretName: store-tls
+        hosts:
+          - store.urumi.example.com
+
+gateway:
+  domain: gateway.urumi.example.com
+  database:
+    storageClass: local-path
+  ingress:
+    className: traefik # or nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    tls:
+      - secretName: gateway-tls
+        hosts:
+          - gateway.urumi.example.com

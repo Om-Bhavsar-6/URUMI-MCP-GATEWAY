@@ -1,0 +1,121 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: store-init-script
+  namespace: {{ .Values.namespaces.store }}
+  labels:
+    {{- include "mcp-gateway.labels" . | nindent 4 }}
+    app.kubernetes.io/component: store-init
+data:
+  init.sh: |
+    #!/bin/sh
+    set -e
+
+    echo "=========================================="
+    echo " Starting WooCommerce Store Initialization"
+    echo "=========================================="
+
+    export WP_CLI_ALLOW_ROOT=1
+    WP_PATH="/var/www/html"
+    STORE_URL="http://{{ .Values.store.domain | default (printf "store.%s" .Values.global.baseDomain) }}"
+
+    echo "==> Step 1: Waiting for WordPress HTTP endpoint to become responsive..."
+    until php -r '
+      $fp = @fsockopen("wordpress", 80, $errno, $errstr, 3);
+      if ($fp) { fclose($fp); exit(0); }
+      exit(1);
+    '; do
+      echo "Waiting for http://wordpress (Apache/PHP) to be ready..."
+      sleep 3
+    done
+    echo "WordPress web server is responsive!"
+
+    echo "==> Step 2: Checking if WordPress core is installed..."
+    if ! wp core is-installed --path="$WP_PATH" --allow-root; then
+      echo "Installing WordPress core..."
+      wp core install \
+        --path="$WP_PATH" \
+        --url="$STORE_URL" \
+        --title="Urumi WooCommerce Store" \
+        --admin_user="$WP_ADMIN_USER" \
+        --admin_password="$WP_ADMIN_PASSWORD" \
+        --admin_email="$WP_ADMIN_EMAIL" \
+        --skip-email \
+        --allow-root
+      echo "WordPress core installed successfully."
+    else
+      echo "WordPress is already installed."
+    fi
+
+    echo "==> Step 3: Configuring permalinks (required for WooCommerce REST API)..."
+    wp rewrite structure '/%postname%/' --hard --path="$WP_PATH" --allow-root
+
+    echo "==> Step 4: Ensuring WooCommerce plugin is installed & active..."
+    if ! wp plugin is-installed woocommerce --path="$WP_PATH" --allow-root; then
+      echo "Installing WooCommerce plugin from wordpress.org..."
+      wp plugin install https://downloads.wordpress.org/plugin/woocommerce.9.3.3.zip --activate --path="$WP_PATH" --allow-root
+    else
+      echo "WooCommerce plugin is already installed. Ensuring activation..."
+      wp plugin activate woocommerce --path="$WP_PATH" --allow-root || true
+    fi
+
+    echo "==> Step 5: Installing WooCommerce default store pages..."
+    wp wc tool run install_pages --user=1 --path="$WP_PATH" --allow-root || true
+
+    echo "==> Step 6: Configuring COD, REST API Keys, and Demo Products..."
+    cat <<'EOF' > /tmp/seed.php
+    <?php
+    echo "Configuring Cash on Delivery...\n";
+    update_option('woocommerce_cod_settings', [
+        'enabled' => 'yes',
+        'title' => 'Cash on Delivery',
+        'description' => 'Pay with cash upon delivery.',
+        'instructions' => 'Pay with cash upon delivery.',
+        'enable_for_methods' => [],
+        'enable_for_virtual' => 'yes'
+    ]);
+
+    echo "Configuring WooCommerce REST API Key...\n";
+    $key = getenv('WC_CONSUMER_KEY');
+    $secret = getenv('WC_CONSUMER_SECRET');
+    $hash = hash_hmac('sha256', $key, 'wc-api');
+
+    global $wpdb;
+    $table = $wpdb->prefix . 'woocommerce_api_keys';
+    $wpdb->replace($table, [
+        'user_id' => 1,
+        'description' => 'Urumi MCP Gateway Key',
+        'permissions' => 'read_write',
+        'consumer_key' => $hash,
+        'consumer_secret' => $secret,
+        'truncated_key' => substr($key, -7),
+        'last_access' => null
+    ]);
+
+    echo "Seeding Demo Products...\n";
+    $products = [
+        ['name' => 'Urumi Developer Hoodie', 'price' => '49.99', 'description' => 'Premium heavyweight organic cotton hoodie.'],
+        ['name' => 'Mechanical Keyboard', 'price' => '89.99', 'description' => 'Hot-swappable mechanical keyboard.'],
+        ['name' => 'Ergonomic Desk Mat', 'price' => '24.99', 'description' => 'Waterproof micro-weave desk pad.']
+    ];
+    foreach ($products as $p) {
+        $existing = get_page_by_title($p['name'], OBJECT, 'product');
+        if (!$existing) {
+            $product = new WC_Product_Simple();
+            $product->set_name($p['name']);
+            $product->set_status('publish');
+            $product->set_catalog_visibility('visible');
+            $product->set_description($p['description']);
+            $product->set_regular_price($p['price']);
+            $product->set_price($p['price']);
+            $id = $product->save();
+            echo "Created Product: {$p['name']} (ID: {$id})\n";
+        }
+    }
+    EOF
+
+    wp eval-file /tmp/seed.php --path="$WP_PATH" --allow-root
+
+    echo "=========================================="
+    echo " Store Initialization COMPLETE!"
+    echo "=========================================="

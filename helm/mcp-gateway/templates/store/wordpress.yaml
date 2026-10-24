@@ -1,0 +1,114 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: wordpress-wp-content
+  namespace: {{ .Values.namespaces.store }}
+  labels:
+    {{- include "mcp-gateway.labels" . | nindent 4 }}
+    app.kubernetes.io/component: wordpress
+spec:
+  accessModes: [ "ReadWriteOnce" ]
+  storageClassName: {{ .Values.store.storageClass | default "standard" }}
+  resources:
+    requests:
+      storage: {{ .Values.store.wordpress.storageSize | default "10Gi" }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress
+  namespace: {{ .Values.namespaces.store }}
+  labels:
+    {{- include "mcp-gateway.labels" . | nindent 4 }}
+    app.kubernetes.io/component: wordpress
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: wordpress
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: wordpress
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/component: wordpress
+    spec:
+      containers:
+        - name: wordpress
+          image: "{{ .Values.store.wordpress.image.repository | default "wordpress" }}:{{ .Values.store.wordpress.image.tag | default "6.6-php8.2-apache" }}"
+          imagePullPolicy: {{ .Values.store.wordpress.image.pullPolicy | default "IfNotPresent" }}
+          env:
+            - name: WORDPRESS_DB_HOST
+              value: "mariadb.{{ .Values.namespaces.store }}.svc.cluster.local:3306"
+            - name: WORDPRESS_DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: store-db-credentials
+                  key: db-name
+            - name: WORDPRESS_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: store-db-credentials
+                  key: db-user
+            - name: WORDPRESS_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: store-db-credentials
+                  key: db-password
+            - name: WORDPRESS_CONFIG_EXTRA
+              value: |
+                /* Allow REST API Basic Auth for WooCommerce */
+                if ( ( isset( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) && 'https' === $_SERVER['HTTP_X_FORWARDED_PROTO'] ) ||
+                     ( isset( $_SERVER['REQUEST_URI'] ) && strpos( $_SERVER['REQUEST_URI'], '/wp-json/' ) !== false ) ) {
+                    $_SERVER['HTTPS'] = 'on';
+                }
+                define( 'WP_ENVIRONMENT_TYPE', 'local' );
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /wp-login.php
+              port: http
+            initialDelaySeconds: 45
+            periodSeconds: 15
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /wp-login.php
+              port: http
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 5
+          resources:
+            {{- toYaml .Values.store.resources.wordpress | nindent 12 }}
+          volumeMounts:
+            - name: wp-content
+              mountPath: /var/www/html/wp-content
+      volumes:
+        - name: wp-content
+          persistentVolumeClaim:
+            claimName: wordpress-wp-content
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress
+  namespace: {{ .Values.namespaces.store }}
+  labels:
+    {{- include "mcp-gateway.labels" . | nindent 4 }}
+    app.kubernetes.io/component: wordpress
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: wordpress
+    app.kubernetes.io/instance: {{ .Release.Name }}

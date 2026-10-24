@@ -1,0 +1,22 @@
+{
+  "payment_method": "cod",
+  "payment_method_title": "Cash on Delivery",
+  "set_paid": false,
+  "billing": {
+    "first_name": "Alice",
+    "last_name": "Tester",
+    "address_1": "123 Tech Park",
+    "city": "Bengaluru",
+    "state": "KA",
+    "postcode": "560001",
+    "country": "IN",
+    "email": "alice@example.com",
+    "phone": "9876543210"
+  },
+  "line_items": [
+    {
+      "product_id": 11,
+      "quantity": 1
+    }
+  ]
+}

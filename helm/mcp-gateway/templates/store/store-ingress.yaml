@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: store-ingress
+  namespace: {{ .Values.namespaces.store }}
+  labels:
+    {{- include "mcp-gateway.labels" . | nindent 4 }}
+    app.kubernetes.io/component: storefront
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "64m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+    {{- with .Values.store.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  ingressClassName: {{ .Values.store.ingress.className | default "nginx" }}
+  {{- if .Values.store.ingress.tls }}
+  tls:
+    {{- toYaml .Values.store.ingress.tls | nindent 4 }}
+  {{- end }}
+  rules:
+    - host: {{ .Values.store.domain | default (printf "store.%s" .Values.global.baseDomain) }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: wordpress
+                port:
+                  number: 80
