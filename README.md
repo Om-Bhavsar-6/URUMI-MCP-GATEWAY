@@ -58,6 +58,7 @@ flowchart TB
     WC_MCP <-->|"REST API v3"| WP
     WP <--> MDB
 ```
+<img width="5052" height="2298" alt="urumi-team-mcp-gateway-on-kubernetes" src="https://github.com/user-attachments/assets/dfa8c6b9-f425-4ad5-8fc2-56c180170430" />
 
 ---
 
