@@ -254,30 +254,5 @@ All storage is handled dynamically by k3s's built-in `local-path` StorageClass, 
 
 ---
 
-## 8. Demo Video Walkthrough Guide
 
-When recording the project demonstration video (under 5 minutes):
-1. **Introduction (30s)**: Introduce yourself, summarize the architecture, and show `kubectl get pods -A` running healthy.
-2. **WooCommerce Storefront (45s)**: Show `http://store.127.0.0.1.nip.io` with seeded products and explain the automated seeding job.
-3. **Gateway Dashboard & AI Chat Agent (90s)**:
-   - Navigate to `http://gateway.127.0.0.1.nip.io`.
-   - Ask the chat agent: *"Create a product called Wireless Mechanical Keyboard for $89.99"*.
-   - Expand the resulting tool call card showing the duration and JSON payload.
-   - Refresh the storefront to show the newly created product online.
-   - Ask the agent: *"What is the weather in Tokyo and calculate shipping rates to Japan for 2kg?"* to demonstrate cross-server aggregation.
-4. **Upstream MCP Servers & Fault Isolation (45s)**:
-   - Switch to the **MCP Upstreams** tab showing all 3 servers (`Connected`).
-   - Click **Tools** to view tool schemas.
-   - Toggle disable on `weather-shipping-mcp` and demonstrate that WooCommerce and Notes tools remain fully operational.
-5. **Team Keys & Instant Revocation (45s)**:
-   - Switch to **API Keys** tab as Bob (`member`).
-   - Generate a new key and copy it.
-   - Click **Revoke** and show in terminal or Postman that subsequent requests with that key fail with immediate `401 Unauthorized`.
-6. **Audit Logs (45s)**:
-   - Switch to **Audit Logs** tab.
-   - Show how every action taken during the demo is logged with user email, server, tool, duration, and status.
 
----
-
-## 9. Submission Link
-- **Internship Round 1 Submission Form:** [https://forms.gle/nftwgyNeenSDmiRb6](https://forms.gle/nftwgyNeenSDmiRb6)
