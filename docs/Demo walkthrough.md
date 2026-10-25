@@ -1,14 +1,7 @@
-# Urumi MCP Gateway - Voiceover Presentation Script
+# Urumi MCP Gateway 
 
-This script matches the video recording located at [`docs/full_demo_walkthrough.webp`](file:///c:/Users/omkbh.OM.000/URUMI/docs/full_demo_walkthrough.webp) (and in your artifact directory). You can read this voiceover directly as you play the recording or import it into your video editor (CapCut, Premiere, OBS, or QuickTime).
+## 🎬 Section 1: Introduction & WooCommerce Storefront 
 
----
-
-## 🎬 Section 1: Introduction & WooCommerce Storefront (0:00 – 0:45)
-
-**Visual Cue:** Storefront loads at `http://store.127.0.0.1.nip.io/` showcasing the WooCommerce store and scrolling through catalog items.
-
-**Spoken Voiceover:**
 > "Hello everyone, and welcome to the presentation of the **Urumi Team MCP Gateway on Kubernetes**. 
 >
 > In this demo, I will walk you through an enterprise-grade Model Context Protocol Gateway architecture built to aggregate multiple distributed MCP servers behind a single secure Streamable HTTP endpoint.
@@ -19,11 +12,9 @@ This script matches the video recording located at [`docs/full_demo_walkthrough.
 
 ---
 
-## 🎬 Section 2: Gateway Dashboard & AI Chat Tool Aggregation (0:45 – 2:00)
+## 🎬 Section 2: Gateway Dashboard & AI Chat Tool Aggregation 
 
-**Visual Cue:** Browser navigates to `http://gateway.127.0.0.1.nip.io/`. User enters prompt: *"List our store products and check shipping rates to NY 10001"*. Expandable tool execution badges appear and are clicked open.
 
-**Spoken Voiceover:**
 > "Now, let’s switch over to the **Urumi MCP Gateway Dashboard** at `gateway.127.0.0.1.nip.io`. This single-page application is built in React 18 and Vite, communicating directly with our Gateway Backend.
 >
 > At the top, you can see our multi-tenant role indicator, currently logged in as **Alice Admin**, alongside live stats for connected upstream MCP servers and active API keys.
@@ -36,11 +27,11 @@ This script matches the video recording located at [`docs/full_demo_walkthrough.
 
 ---
 
-## 🎬 Section 3: Upstream Server Management & Fault Isolation (2:00 – 3:15)
+## 🎬 Section 3: Upstream Server Management & Fault Isolation 
 
-**Visual Cue:** Navigating to the **MCP Upstreams** tab. Inspecting the three server cards. Opening the "Tools" drawer for `woocommerce-mcp`. Toggling disable/enable on `weather-shipping-mcp`. Opening the "+ Add Server" registration modal.
 
-**Spoken Voiceover:**
+
+
 > "Next, let's explore the **MCP Upstreams** tab.
 >
 > Here we see all three independent upstream servers currently connected:
@@ -56,11 +47,9 @@ This script matches the video recording located at [`docs/full_demo_walkthrough.
 
 ---
 
-## 🎬 Section 4: Multi-User RBAC & Instant API Key Revocation (3:15 – 4:15)
+## 🎬 Section 4: Multi-User RBAC & Instant API Key Revocation 
 
-**Visual Cue:** Switching user to **Bob Member** in the top bar. Navigating to the **API Keys** tab. Generating `Bob Production Key`, copying the secret, and clicking "Revoke".
 
-**Spoken Voiceover:**
 > "Now let's examine security and multi-user access control. In the top navbar, I switch the active user from Alice Admin to **Bob Member**.
 >
 > Navigating to the **API Keys** tab, each team member can generate their own personal API keys. Let's create a new key named `'Bob Production Key'`.
@@ -73,11 +62,9 @@ This script matches the video recording located at [`docs/full_demo_walkthrough.
 
 ---
 
-## 🎬 Section 5: Immutable Audit Logs & Traceability (4:15 – 4:45)
+## 🎬 Section 5: Immutable Audit Logs & Traceability 
 
-**Visual Cue:** Navigating to the **Audit Logs** tab. Scrolling the table. Clicking **Inspect** on a log entry to view input/output JSON payloads.
 
-**Spoken Voiceover:**
 > "Moving to the **Audit Logs** tab, every single operation executed across the Gateway is tracked immutably.
 >
 > Each audit record captures the timestamp, the acting user persona (`alice_admin` or `bob_member`), the client IP, the upstream server, the exact MCP tool called, and the round-trip latency in milliseconds.
@@ -86,11 +73,9 @@ This script matches the video recording located at [`docs/full_demo_walkthrough.
 
 ---
 
-## 🎬 Section 6: Architecture, VPS Production Story & Conclusion (4:45 – 5:15)
+## 🎬 Section 6: Architecture, VPS Production Story & Conclusion 
 
-**Visual Cue:** Showing the final chat view and returning to the architecture overview.
 
-**Spoken Voiceover:**
 > "To summarize our Kubernetes and deployment architecture:
 > - All workloads run as non-root users with read-only root filesystems and dropped Linux capabilities.
 > - Zero upstream credentials, like WooCommerce REST API consumer keys or database passwords, ever leave the cluster or touch client browsers.
@@ -98,4 +83,4 @@ This script matches the video recording located at [`docs/full_demo_walkthrough.
 >
 > All 10 Definition-of-Done criteria are fully met, verified by our automated test suite. 
 >
-> Thank you for watching!"
+> Thank you!"
