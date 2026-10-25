@@ -1,0 +1,438 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "architecture",
+  "quality": "showcase",
+  "startedAt": "2026-10-25T09:56:53.542Z",
+  "specification": {
+    "path": "C:\\Users\\omkbh.OM.000\\URUMI\\.archify\\architecture-urumi-mcp-gateway-20261025-151800\\candidate.json",
+    "sha256": "beabaebad60bf8cfdfa14595d2911f4b2c5284d55df91e08cbe0076811fed769",
+    "bytes": 7951
+  },
+  "artifact": {
+    "path": "C:\\Users\\omkbh.OM.000\\URUMI\\.archify\\architecture-urumi-mcp-gateway-20261025-151800\\urumi-mcp-gateway.html",
+    "sha256": "137e960b533487652e1c00cc86ec85788a6cfae42fd7a15c7852e62fc36b895a",
+    "bytes": 857454
+  },
+  "stages": {
+    "validate": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": null,
+      "execution": "embedded-in-deliver",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Users\\omkbh.OM.000\\URUMI\\.agents\\skills\\archify\\bin\\archify.mjs",
+        "deliver",
+        "architecture",
+        "C:\\Users\\omkbh.OM.000\\URUMI\\.archify\\architecture-urumi-mcp-gateway-20261025-151800\\candidate.json",
+        "C:\\Users\\omkbh.OM.000\\URUMI\\.archify\\architecture-urumi-mcp-gateway-20261025-151800\\urumi-mcp-gateway.html",
+        "--quality",
+        "showcase",
+        "--repo-root",
+        "C:\\Users\\omkbh.OM.000\\URUMI",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": true,
+        "command": "validate",
+        "specification": {
+          "sha256": "beabaebad60bf8cfdfa14595d2911f4b2c5284d55df91e08cbe0076811fed769",
+          "bytes": 7951
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        }
+      }
+    },
+    "deliver": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 2249,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Users\\omkbh.OM.000\\URUMI\\.agents\\skills\\archify\\bin\\archify.mjs",
+        "deliver",
+        "architecture",
+        "C:\\Users\\omkbh.OM.000\\URUMI\\.archify\\architecture-urumi-mcp-gateway-20261025-151800\\candidate.json",
+        "C:\\Users\\omkbh.OM.000\\URUMI\\.archify\\architecture-urumi-mcp-gateway-20261025-151800\\urumi-mcp-gateway.html",
+        "--quality",
+        "showcase",
+        "--repo-root",
+        "C:\\Users\\omkbh.OM.000\\URUMI",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "receiptId": "bcb99e46-b71e-4b07-b70e-6cfa7da4da70",
+        "ok": true,
+        "command": "deliver",
+        "type": "architecture",
+        "input": "C:\\Users\\omkbh.OM.000\\URUMI\\.archify\\architecture-urumi-mcp-gateway-20261025-151800\\candidate.json",
+        "output": "C:\\Users\\omkbh.OM.000\\URUMI\\.archify\\architecture-urumi-mcp-gateway-20261025-151800\\urumi-mcp-gateway.html",
+        "specification": {
+          "sha256": "beabaebad60bf8cfdfa14595d2911f4b2c5284d55df91e08cbe0076811fed769",
+          "bytes": 7951
+        },
+        "artifact": {
+          "sha256": "137e960b533487652e1c00cc86ec85788a6cfae42fd7a15c7852e62fc36b895a",
+          "bytes": 857454
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        },
+        "evidence": {
+          "verified": true,
+          "repository": "https://github.com/Om-Bhavsar-6/URUMI-MCP-GATEWAY",
+          "revision": "7abbdf8cbb3a9f576d7512be071c2e74e0d687d9",
+          "references": 10
+        },
+        "update": {
+          "status": "unavailable",
+          "installedVersion": null,
+          "availableVersion": null,
+          "releaseNotes": null,
+          "checkedAt": null,
+          "source": null,
+          "noticeRequired": false,
+          "noticeText": null,
+          "reason": "disabled"
+        }
+      }
+    },
+    "check": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 1015,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Users\\omkbh.OM.000\\URUMI\\.agents\\skills\\archify\\bin\\archify.mjs",
+        "check",
+        "C:\\Users\\omkbh.OM.000\\URUMI\\.archify\\architecture-urumi-mcp-gateway-20261025-151800\\urumi-mcp-gateway.html",
+        "--require-provenance"
+      ],
+      "receipt": {
+        "ok": true,
+        "file": "C:\\Users\\omkbh.OM.000\\URUMI\\.archify\\architecture-urumi-mcp-gateway-20261025-151800\\urumi-mcp-gateway.html",
+        "artifact": {
+          "sha256": "137e960b533487652e1c00cc86ec85788a6cfae42fd7a15c7852e62fc36b895a",
+          "bytes": 857454
+        },
+        "checks": [
+          {
+            "name": "single_svg",
+            "ok": true,
+            "details": [
+              "found 1 <svg> block(s)"
+            ]
+          },
+          {
+            "name": "finite_svg",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "orthogonal_arrows",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "label_route_clearance",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_crossings",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_corridors",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "container_border_runs",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "route_rhythm",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "legend_clearance",
+            "ok": true,
+            "details": []
+          }
+        ],
+        "composition": {
+          "schemaVersion": 1,
+          "profile": "showcase",
+          "status": "pass",
+          "summary": {
+            "errors": 0,
+            "warnings": 0
+          },
+          "metrics": {
+            "properCrossings": 0,
+            "resolvedCrossovers": 0,
+            "ambiguousCorridors": 0,
+            "arrowheadCollisions": 0,
+            "containerBorderRuns": 0,
+            "labelRouteClearanceIssues": 0,
+            "labelCanvasOverflowIssues": 0,
+            "minLabelRouteClearance": 7,
+            "desktopReadabilityIssues": 0,
+            "viewportHeightIssues": 0,
+            "minProjectedNodeTextPx": 6.73,
+            "maxBends": 3,
+            "routesOverSuggestedBends": 2,
+            "maxStretch": 1.458,
+            "routesOverSuggestedStretch": 1,
+            "minSegmentPx": 20,
+            "minInteriorSegmentPx": 56,
+            "shortSegmentCount": 0,
+            "shortEndpointSegmentCount": 0,
+            "shortInteriorSegmentCount": 0,
+            "microSegmentCount": 0
+          },
+          "suggestedLimits": {
+            "bendsPerRelationship": 2,
+            "stretch": 1.35,
+            "segmentPx": 16,
+            "microSegmentPx": 8
+          },
+          "routeReview": {
+            "crossings": [],
+            "detours": [
+              {
+                "relationship": {
+                  "from": "ingress",
+                  "to": "wordpress",
+                  "label": "store.127.0.0.1.nip.io",
+                  "collectionIndex": 3,
+                  "artifactIndex": 4
+                },
+                "bends": 2,
+                "stretch": 1.458,
+                "directCorridorBlockers": [
+                  {
+                    "id": "gateway_backend",
+                    "label": "Team MCP Gateway",
+                    "box": [
+                      480,
+                      250,
+                      165,
+                      66
+                    ]
+                  },
+                  {
+                    "id": "woocommerce_mcp",
+                    "label": "WooCommerce MCP",
+                    "box": [
+                      940,
+                      250,
+                      160,
+                      64
+                    ]
+                  }
+                ]
+              },
+              {
+                "relationship": {
+                  "from": "woocommerce_mcp",
+                  "to": "wordpress",
+                  "label": "REST API v3 (Basic Auth)",
+                  "collectionIndex": 8,
+                  "artifactIndex": 9
+                },
+                "bends": 3,
+                "stretch": 1.279
+              },
+              {
+                "relationship": {
+                  "from": "wordpress",
+                  "to": "mariadb",
+                  "label": "SQL (Port 3306)",
+                  "collectionIndex": 9,
+                  "artifactIndex": 10
+                },
+                "bends": 3,
+                "stretch": 1.296
+              }
+            ]
+          },
+          "leadingSpace": {
+            "measured": true,
+            "emptyTopPx": 134,
+            "emptyTopRatio": 0.228,
+            "occupiedTop": 134,
+            "viewBoxTop": 0,
+            "canvasHeight": 588,
+            "typicalNodeHeight": 64,
+            "reviewSuggested": true
+          },
+          "desktopReadability": {
+            "budgetBasis": "recognized-declared-wide",
+            "readerContract": "declared-wide-v1",
+            "availableDiagramWidth": 1346,
+            "actualBudgetPx": 1346,
+            "actualReaderWidth": 1376,
+            "desiredReaderWidth": 1530,
+            "viewportCap": 1376,
+            "limit": "viewport-cap",
+            "requestedTargetPx": 7.5,
+            "requestedTargetMet": false,
+            "hardFloorPx": 6,
+            "hardFloorMet": true,
+            "minimumOwner": {
+              "kind": "node",
+              "id": "clients_claude"
+            },
+            "minimumSourceTextPx": 7.9,
+            "minimumProjectedTextPx": 6.73,
+            "semanticTextCount": 33
+          },
+          "issues": []
+        },
+        "provenance": "current",
+        "deliveryReceiptId": "bcb99e46-b71e-4b07-b70e-6cfa7da4da70"
+      }
+    },
+    "browser-check": {
+      "status": "fail",
+      "exitCode": 1,
+      "durationMs": 6182,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Users\\omkbh.OM.000\\URUMI\\.agents\\skills\\archify\\bin\\archify.mjs",
+        "browser-check",
+        "C:\\Users\\omkbh.OM.000\\URUMI\\.archify\\architecture-urumi-mcp-gateway-20261025-151800\\urumi-mcp-gateway.html",
+        "--json",
+        "--require-provenance"
+      ],
+      "execution": "in-process",
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": false,
+        "command": "browser-check",
+        "evidenceKind": "automated-browser",
+        "status": "fail",
+        "visualReview": "not-requested",
+        "provenance": "current",
+        "deliveryReceiptId": "bcb99e46-b71e-4b07-b70e-6cfa7da4da70",
+        "artifact": {
+          "path": "C:\\Users\\omkbh.OM.000\\URUMI\\.archify\\architecture-urumi-mcp-gateway-20261025-151800\\urumi-mcp-gateway.html",
+          "sha256": "137e960b533487652e1c00cc86ec85788a6cfae42fd7a15c7852e62fc36b895a",
+          "bytes": 857454
+        },
+        "state": {
+          "detail": "read",
+          "motion": "still"
+        },
+        "chrome": {
+          "status": "available",
+          "executable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+        },
+        "diagnostics": [
+          {
+            "code": "viewer/browser-check-runtime",
+            "severity": "error",
+            "message": "browser-check could not complete its Chrome inspection.",
+            "subject": {
+              "artifact": "C:\\Users\\omkbh.OM.000\\URUMI\\.archify\\architecture-urumi-mcp-gateway-20261025-151800\\urumi-mcp-gateway.html"
+            },
+            "evidence": {
+              "reason": "Chrome navigation failed: net::ERR_FILE_NOT_FOUND"
+            },
+            "supportedFixes": [
+              "resolve the reported Chrome inspection error, then rerun browser-check"
+            ]
+          }
+        ],
+        "containment": {
+          "status": "fail",
+          "policy": "fit-or-reader-declared-readable-vertical-scroll",
+          "viewports": []
+        },
+        "themeStates": {
+          "status": "fail",
+          "viewports": []
+        },
+        "readability": {
+          "status": "fail",
+          "minimumProjectedNodeTextPx": 6,
+          "viewports": []
+        },
+        "viewerChrome": {
+          "status": "fail",
+          "viewports": []
+        },
+        "captures": {
+          "status": "not-requested",
+          "screenshots": [],
+          "contactSheet": null
+        },
+        "sidecars": {
+          "receipt": "urumi-mcp-gateway.browser-check.json",
+          "files": []
+        },
+        "error": "Chrome navigation failed: net::ERR_FILE_NOT_FOUND"
+      }
+    }
+  },
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  },
+  "diagnostics": [
+    {
+      "code": "viewer/browser-check-runtime",
+      "severity": "error",
+      "message": "browser-check could not complete its Chrome inspection.",
+      "subject": {
+        "artifact": "C:\\Users\\omkbh.OM.000\\URUMI\\.archify\\architecture-urumi-mcp-gateway-20261025-151800\\urumi-mcp-gateway.html"
+      },
+      "evidence": {
+        "reason": "Chrome navigation failed: net::ERR_FILE_NOT_FOUND"
+      },
+      "supportedFixes": [
+        "resolve the reported Chrome inspection error, then rerun browser-check"
+      ]
+    }
+  ],
+  "evidence": {
+    "receipt": "C:\\Users\\omkbh.OM.000\\URUMI\\.archify\\architecture-urumi-mcp-gateway-20261025-151800\\urumi-mcp-gateway.finalize.json",
+    "summaryReceipt": "C:\\Users\\omkbh.OM.000\\URUMI\\.archify\\architecture-urumi-mcp-gateway-20261025-151800\\urumi-mcp-gateway.finalize-summary.json",
+    "browserCheckReceipt": "C:\\Users\\omkbh.OM.000\\URUMI\\.archify\\architecture-urumi-mcp-gateway-20261025-151800\\urumi-mcp-gateway.browser-check.json"
+  },
+  "visualReview": "not-requested",
+  "failedStage": "browser-check",
+  "finishedAt": "2026-10-25T09:57:04.778Z",
+  "durationMs": 11237,
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-10-25T09:51:22.877Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  }
+}

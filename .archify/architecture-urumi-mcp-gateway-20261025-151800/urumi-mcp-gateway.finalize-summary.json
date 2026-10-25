@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "C:\\Users\\omkbh.OM.000\\URUMI\\.archify\\architecture-urumi-mcp-gateway-20261025-151800\\candidate.json",
+    "sha256": "beabaebad60bf8cfdfa14595d2911f4b2c5284d55df91e08cbe0076811fed769",
+    "bytes": 7951
+  },
+  "artifact": {
+    "path": "C:\\Users\\omkbh.OM.000\\URUMI\\.archify\\architecture-urumi-mcp-gateway-20261025-151800\\urumi-mcp-gateway.html",
+    "sha256": "137e960b533487652e1c00cc86ec85788a6cfae42fd7a15c7852e62fc36b895a",
+    "bytes": 857454
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "fail"
+  },
+  "failedStage": "browser-check",
+  "diagnostics": [
+    {
+      "code": "viewer/browser-check-runtime",
+      "severity": "error",
+      "message": "browser-check could not complete its Chrome inspection.",
+      "subject": {
+        "artifact": "C:\\Users\\omkbh.OM.000\\URUMI\\.archify\\architecture-urumi-mcp-gateway-20261025-151800\\urumi-mcp-gateway.html"
+      },
+      "evidence": {
+        "reason": "Chrome navigation failed: net::ERR_FILE_NOT_FOUND"
+      },
+      "supportedFixes": [
+        "resolve the reported Chrome inspection error, then rerun browser-check"
+      ]
+    }
+  ],
+  "diagnosticSummary": {
+    "total": 1,
+    "shown": 1,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "C:\\Users\\omkbh.OM.000\\URUMI\\.archify\\architecture-urumi-mcp-gateway-20261025-151800\\urumi-mcp-gateway.finalize.json",
+    "summaryReceipt": "C:\\Users\\omkbh.OM.000\\URUMI\\.archify\\architecture-urumi-mcp-gateway-20261025-151800\\urumi-mcp-gateway.finalize-summary.json",
+    "browserCheckReceipt": "C:\\Users\\omkbh.OM.000\\URUMI\\.archify\\architecture-urumi-mcp-gateway-20261025-151800\\urumi-mcp-gateway.browser-check.json"
+  },
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-10-25T09:51:22.877Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  },
+  "visualReview": "not-requested",
+  "durationMs": 11237,
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  }
+}

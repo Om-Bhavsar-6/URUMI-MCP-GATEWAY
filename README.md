@@ -17,6 +17,8 @@ The system is deployed into two isolated namespaces with strict network separati
 - **`urumi-store`**: Houses WordPress 6.6 with WooCommerce 9.3.3, a MariaDB 10.11 database, and the hardened custom WooCommerce Streamable HTTP MCP server.
 - **`urumi-gateway`**: Houses the Team MCP Gateway Backend, PostgreSQL 16 stateful storage, additional mock upstream MCP servers (Weather & Shipping, Customer CRM Notes), and the Ingress controller routing layer.
 
+> 💡 **Interactive Architecture Map:** Open [`docs/architecture-diagram.html`](docs/architecture-diagram.html) in any browser for an interactive, animated, and source-backed system architecture diagram generated with **Archify**.
+
 ```mermaid
 flowchart TB
     subgraph Clients["Clients & Developers"]

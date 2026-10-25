@@ -1,0 +1,272 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Urumi Team MCP Gateway on Kubernetes",
+    "subtitle": "Multi-Tenant MCP Control Plane Architecture",
+    "output": ".archify/architecture-urumi-mcp-gateway-20261025-151800/urumi-mcp-gateway.html",
+    "visual_preset": "blueprint",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/Om-Bhavsar-6/URUMI-MCP-GATEWAY.git",
+      "provider": "github",
+      "revision": "7abbdf8cbb3a9f576d7512be071c2e74e0d687d9"
+    }
+  },
+  "components": [
+    {
+      "id": "clients_claude",
+      "type": "external",
+      "label": "External MCP Clients",
+      "sublabel": "Claude Code / Cursor / Inspector",
+      "pos": [40, 160],
+      "size": [160, 64],
+      "tag": "Streamable HTTP",
+      "icon": "external",
+      "sources": [
+        { "path": "README.md", "line": 183, "end_line": 204, "label": "Client Setup" }
+      ]
+    },
+    {
+      "id": "clients_web",
+      "type": "frontend",
+      "label": "Web Dashboard & Chat",
+      "sublabel": "React 18 + Vite (SPA)",
+      "pos": [40, 340],
+      "size": [160, 64],
+      "tag": "User A (Admin) / B (Member)",
+      "icon": "frontend",
+      "sources": [
+        { "path": "src/dashboard/src/App.tsx", "line": 10, "end_line": 38, "label": "Dashboard SPA" }
+      ]
+    },
+    {
+      "id": "ingress",
+      "type": "cloud",
+      "label": "ingress-nginx Controller",
+      "sublabel": "HostPort 80/443 & nip.io",
+      "pos": [260, 250],
+      "size": [160, 64],
+      "tag": "Ingress Layer",
+      "icon": "cloud",
+      "sources": [
+        { "path": "helm/mcp-gateway/templates/gateway/gateway-ingress.yaml", "line": 1, "end_line": 25, "label": "Ingress Routing" }
+      ]
+    },
+    {
+      "id": "gateway_backend",
+      "type": "security",
+      "label": "Team MCP Gateway",
+      "sublabel": "Aggregator & Router :4000",
+      "pos": [480, 250],
+      "size": [165, 66],
+      "tag": "Streamable HTTP /mcp",
+      "icon": "security",
+      "sources": [
+        { "path": "src/gateway-backend/src/mcp/gateway-mcp-server.ts", "line": 1, "end_line": 55, "label": "Gateway Server" }
+      ]
+    },
+    {
+      "id": "postgres",
+      "type": "database",
+      "label": "PostgreSQL 16",
+      "sublabel": "StatefulSet :5432",
+      "pos": [480, 400],
+      "size": [165, 64],
+      "tag": "Hashed Keys & Audit Trail",
+      "icon": "database",
+      "sources": [
+        { "path": "src/gateway-backend/src/db/schema.ts", "line": 1, "end_line": 78, "label": "Database Schema" }
+      ]
+    },
+    {
+      "id": "weather_mcp",
+      "type": "backend",
+      "label": "Weather & Shipping MCP",
+      "sublabel": "ClusterIP :3001",
+      "pos": [700, 160],
+      "size": [160, 64],
+      "tag": "2 Tools (Logistics)",
+      "icon": "backend",
+      "sources": [
+        { "path": "src/mock-upstreams/src/weather-server.ts", "line": 1, "end_line": 50, "label": "Weather Server" }
+      ]
+    },
+    {
+      "id": "notes_mcp",
+      "type": "backend",
+      "label": "Customer Notes MCP",
+      "sublabel": "ClusterIP :3002",
+      "pos": [700, 320],
+      "size": [160, 64],
+      "tag": "3 Tools (CRM Memory)",
+      "icon": "backend",
+      "sources": [
+        { "path": "src/mock-upstreams/src/notes-server.ts", "line": 1, "end_line": 50, "label": "Notes Server" }
+      ]
+    },
+    {
+      "id": "woocommerce_mcp",
+      "type": "backend",
+      "label": "WooCommerce MCP",
+      "sublabel": "ClusterIP :3000",
+      "pos": [940, 250],
+      "size": [160, 64],
+      "tag": "5 Tools (Store & Orders)",
+      "icon": "backend",
+      "sources": [
+        { "path": "src/woocommerce-mcp/src/tools.ts", "line": 1, "end_line": 60, "label": "WooCommerce Tools" }
+      ]
+    },
+    {
+      "id": "wordpress",
+      "type": "backend",
+      "label": "WordPress / WooCommerce",
+      "sublabel": "Deployment :80",
+      "pos": [1160, 250],
+      "size": [160, 64],
+      "tag": "REST API v3 & Storefront",
+      "icon": "backend",
+      "sources": [
+        { "path": "helm/mcp-gateway/templates/store/wordpress.yaml", "line": 1, "end_line": 50, "label": "WordPress Pod" }
+      ]
+    },
+    {
+      "id": "mariadb",
+      "type": "database",
+      "label": "MariaDB 10.11",
+      "sublabel": "StatefulSet :3306",
+      "pos": [1380, 250],
+      "size": [140, 64],
+      "tag": "Store Persistence PVC",
+      "icon": "database",
+      "sources": [
+        { "path": "helm/mcp-gateway/templates/store/mariadb.yaml", "line": 1, "end_line": 50, "label": "MariaDB StatefulSet" }
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Kubernetes Cluster (Kind / k3s)",
+      "wraps": [
+        "ingress",
+        "gateway_backend",
+        "postgres",
+        "weather_mcp",
+        "notes_mcp",
+        "woocommerce_mcp",
+        "wordpress",
+        "mariadb"
+      ],
+      "pad": 20
+    },
+    {
+      "kind": "security-group",
+      "label": "Namespace: urumi-gateway",
+      "wraps": ["gateway_backend", "postgres", "weather_mcp", "notes_mcp"],
+      "pad": 14
+    },
+    {
+      "kind": "security-group",
+      "label": "Namespace: urumi-store",
+      "wraps": ["woocommerce_mcp", "wordpress", "mariadb"],
+      "pad": 14
+    }
+  ],
+  "connections": [
+    {
+      "from": "clients_claude",
+      "to": "ingress",
+      "label": "Streamable HTTP + Key",
+      "variant": "emphasis"
+    },
+    {
+      "from": "clients_web",
+      "to": "ingress",
+      "label": "HTTP Dashboard / Chat",
+      "variant": "emphasis"
+    },
+    {
+      "from": "ingress",
+      "to": "gateway_backend",
+      "label": "gateway.127.0.0.1.nip.io",
+      "variant": "emphasis"
+    },
+    {
+      "from": "ingress",
+      "to": "wordpress",
+      "label": "store.127.0.0.1.nip.io",
+      "variant": "default",
+      "fromSide": "bottom",
+      "toSide": "bottom",
+      "via": [[340, 520], [1240, 520]]
+    },
+    {
+      "from": "gateway_backend",
+      "to": "postgres",
+      "label": "Hashed Auth & Audit Log",
+      "variant": "security"
+    },
+    {
+      "from": "gateway_backend",
+      "to": "weather_mcp",
+      "label": "Cluster DNS :3001",
+      "variant": "default"
+    },
+    {
+      "from": "gateway_backend",
+      "to": "notes_mcp",
+      "label": "Cluster DNS :3002",
+      "variant": "default"
+    },
+    {
+      "from": "gateway_backend",
+      "to": "woocommerce_mcp",
+      "label": "Cross-Namespace :3000",
+      "variant": "security"
+    },
+    {
+      "from": "woocommerce_mcp",
+      "to": "wordpress",
+      "label": "REST API v3 (Basic Auth)",
+      "variant": "security"
+    },
+    {
+      "from": "wordpress",
+      "to": "mariadb",
+      "label": "SQL (Port 3306)",
+      "variant": "default"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Unified Team MCP Gateway",
+      "items": [
+        "Aggregates 3 upstream MCP servers (10 tools total) behind a single Streamable HTTP endpoint (/mcp)",
+        "Deterministic namespacing (woocommerce_*, weather_*, shipping_*, customer_notes_*)",
+        "Fault-isolated queries via Promise.allSettled with 5-8s circuit breaker timeouts"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Zero-Trust Security & RBAC",
+      "items": [
+        "Two-tier RBAC: Alice (Admin) and Bob (Member) with isolated permissions",
+        "Instant revocation: API keys hashed with SHA-256; checked against PostgreSQL in real-time",
+        "SSRF guardrails reject cloud metadata (169.254.169.254), loopback, and K8s control plane"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Kubernetes & Production Readiness",
+      "items": [
+        "Dual isolated namespaces (urumi-store and urumi-gateway) protected by NetworkPolicies",
+        "Hardened containers running as non-root (UID 1000) with read-only root filesystems and dropped capabilities",
+        "Identical Helm charts deploy to local Kind and VPS k3s purely via values files"
+      ]
+    }
+  ]
+}
