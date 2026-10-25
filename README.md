@@ -112,8 +112,8 @@ flowchart TB
 
 ### Step 1: Clone and Inspect
 ```bash
-git clone https://github.com/omkbh/URUMI.git
-cd URUMI
+git clone https://github.com/Om-Bhavsar-6/URUMI-MCP-GATEWAY.git
+cd URUMI-MCP-GATEWAY
 ```
 
 ### Step 2: Bootstrap Kind Cluster & Ingress Controller
