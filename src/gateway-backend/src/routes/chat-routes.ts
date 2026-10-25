@@ -101,7 +101,10 @@ chatRouter.post('/', async (req: AuthenticatedRequest, res: Response) => {
     const lowerPrompt = prompt.toLowerCase();
     let reply = '';
 
-    if (lowerPrompt.includes('list products') || lowerPrompt.includes('show products') || lowerPrompt.includes('catalog')) {
+    if (
+      (lowerPrompt.includes('product') && (lowerPrompt.includes('list') || lowerPrompt.includes('show') || lowerPrompt.includes('catalog') || lowerPrompt.includes('inventory'))) ||
+      lowerPrompt.includes('store products')
+    ) {
       const startTime = Date.now();
       const result = await aggregator.executeTool('woocommerce_list_products', { per_page: 5 }, user);
       toolExecutionLog.push({ tool: 'woocommerce_list_products', args: { per_page: 5 }, result, durationMs: Date.now() - startTime });
@@ -118,8 +121,13 @@ chatRouter.post('/', async (req: AuthenticatedRequest, res: Response) => {
       const startTime = Date.now();
       const result = await aggregator.executeTool('woocommerce_create_product', { name, regular_price: price }, user);
       toolExecutionLog.push({ tool: 'woocommerce_create_product', args: { name, regular_price: price }, result, durationMs: Date.now() - startTime });
-      const created = JSON.parse(result.content[0].text);
-      reply = `Successfully created product **${created.name}** with ID #${created.id} priced at $${created.price}!`;
+      const rawText = result.content[0]?.text || '';
+      try {
+        const created = JSON.parse(rawText);
+        reply = `Successfully created product **${created.name}** with ID #${created.id} priced at $${created.price}!`;
+      } catch {
+        reply = rawText || `Successfully created product **${name}** priced at $${price}!`;
+      }
 
     } else if (lowerPrompt.includes('order') && (lowerPrompt.includes('list') || lowerPrompt.includes('show') || lowerPrompt.includes('recent'))) {
       const startTime = Date.now();
